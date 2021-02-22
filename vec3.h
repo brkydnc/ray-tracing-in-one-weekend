@@ -16,5 +16,8 @@ vec3 vec3_div(vec3 vector, double value);
 vec3 vec3_unit(vec3 vector);
 double vec3_dot(vec3 vector1, vec3 vector2);
 vec3 vec3_cross(vec3 vector1, vec3 vector2);
+vec3 vec3_random();
+vec3 vec3_random_in(double min, double max);
+vec3 vec3_random_in_unit_sphere();
 
 #endif

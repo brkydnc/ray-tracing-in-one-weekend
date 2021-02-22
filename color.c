@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include "color.h"
 #include "sphere.h"
 #include "util.h"
@@ -17,9 +18,10 @@ void write_color(FILE *out, Color color, int samples_per_pixel) {
   unsigned blue = (unsigned)  color.z;
 
   double scale = 1.0 / samples_per_pixel;
-  red *= scale;
-  green *= scale;
-  blue *= scale;
+  // gamma correction & scale to average color
+  red = sqrt(red * scale / 255) * 255;
+  green = sqrt(green * scale / 255) * 255;
+  blue = sqrt(blue * scale / 255) * 255;
 
   red = clamp(red, 0.0, 255.0);
   green = clamp(green, 0.0, 255.0);

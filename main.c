@@ -36,17 +36,14 @@ bool world_hit(Ray ray, double t_min, double t_max, HitRecord *record) {
     return hit_anything;
 }
 
-Color ray_color(Ray ray) {
+Color ray_color(Ray ray, int depth) {
+  if(depth <= 0) return color_from(0.0, 0.0, 0.0);
+
   HitRecord record;
-  if (world_hit(ray, 0, INFINITY, &record)) {
-    vec3 point_light = {-1.0, 1.0, 0.0};
-    vec3 point_to_light = vec3_sub(point_light, record.point);
-    double I = 100.0;
-    double distance = vec3_length(point_to_light);
-    double cos_angle = vec3_dot(point_to_light, record.normal) / (vec3_length(record.normal) * distance);
-    double E = cos_angle * I / distance * distance;
-    double clamped = clamp(E, 0.0, 255.0);
-    return color_from(clamped, clamped, clamped);
+  if (world_hit(ray, 0.0001, INFINITY, &record)) {
+    vec3 target = vec3_add(record.normal, vec3_random_in_unit_sphere());
+    Ray child = { record.point, target };
+    return vec3_mul(ray_color(child, depth - 1), 0.5);
   }
 
   vec3 unit_direction = vec3_unit(ray.direction);
@@ -60,7 +57,8 @@ int main() {
   const double aspect_ratio = 16.0 / 9.0;
   const int width = 256;
   const int height = (int) (width / aspect_ratio);
-  const int samples_per_pixel = 20;
+  const int samples_per_pixel = 100;
+  const int max_depth = 50;
 
   // Camera
   Camera camera;
@@ -78,7 +76,7 @@ int main() {
         double u = (double) (width - w + random_double()) / width;
         double v = (double) (height - h + random_double()) / height;
         Ray ray = get_ray(camera, u, v);
-        pixel = vec3_add(pixel, ray_color(ray));
+        pixel = vec3_add(pixel, ray_color(ray, max_depth));
       }
       write_color(stdout, pixel, samples_per_pixel);
     }
