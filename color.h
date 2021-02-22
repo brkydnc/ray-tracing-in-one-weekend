@@ -12,6 +12,6 @@ extern const Color SKY_BLUE;
 
 Color color_from(double r, double g, double b);
 Color ray_color(Ray ray);
-void write_color(FILE *out, Color color);
+void write_color(FILE *out, Color color, int samples_per_pixel);
 
 #endif

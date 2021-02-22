@@ -8,8 +8,11 @@
 #include "ray.h"
 #include "color.h"
 #include "sphere.h"
+#include "camera.h"
 
 #define OBJECT_COUNT 2
+#define VIEWPORT_HEIGHT 2.0
+#define FOCAL_LENGTH 1.0
 
 const Sphere WORLD[OBJECT_COUNT] = {
   {{ 0.0, 0.0, -1.0 }, 0.5},
@@ -55,33 +58,29 @@ int main() {
   srand(time(0));
   // Image
   const double aspect_ratio = 16.0 / 9.0;
-  const int width = 1366;
+  const int width = 256;
   const int height = (int) (width / aspect_ratio);
+  const int samples_per_pixel = 20;
 
   // Camera
-  double viewport_height = 2.0;
-  double viewport_width = aspect_ratio * viewport_height;
-  double focal_length = 1.0;
+  Camera camera;
+  initialize_camera(&camera, aspect_ratio, VIEWPORT_HEIGHT, FOCAL_LENGTH);
 
-  vec3 origin = {0.0, 0.0, 0.0};
-  vec3 horizontal = {viewport_width, 0, 0};
-  vec3 vertical = {0, viewport_height, 0};
-  vec3 lower_left_corner = {-viewport_width/2, -viewport_height/2, -focal_length};
-
+  // Write image file header
   printf("P3\n%i %i\n255\n", width, height);
-  int h, w;
+
+  register int h, w;
   for (h=0; h<height; h++) {
     for (w=0; w<width; w++) {
-      double h_ratio = (double) (height - h) / height;
-      double w_ratio = (double) (width - w) / width;
-      // the point on viewport, relative to the lower left corner
-      vec3 r_blc = { w_ratio * viewport_width, h_ratio * viewport_height, 0.0};
-      // relative to the origin
-      vec3 r_origin = vec3_add(lower_left_corner, r_blc);
-
-      Ray ray = { origin, vec3_sub(r_origin, origin) };
-      Color pixel = ray_color(ray);
-      write_color(stdout, pixel);
+      Color pixel = { 0.0, 0.0, 0.0 };
+      register int s;
+      for (s=0; s < samples_per_pixel; s++) {
+        double u = (double) (width - w + random_double()) / width;
+        double v = (double) (height - h + random_double()) / height;
+        Ray ray = get_ray(camera, u, v);
+        pixel = vec3_add(pixel, ray_color(ray));
+      }
+      write_color(stdout, pixel, samples_per_pixel);
     }
   }
 }

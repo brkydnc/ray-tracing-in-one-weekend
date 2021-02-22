@@ -1,6 +1,6 @@
 CC = gcc
 LDFLAGS = -lm 
-OBJFILES = main.o vec3.o color.o ray.o hit.o util.o
+OBJFILES = main.o vec3.o color.o ray.o hit.o util.o camera.o
 TARGET = main
 RENDER_OUTPUT = output.ppm
 
@@ -12,5 +12,8 @@ $(TARGET): $(OBJFILES)
 clean:
 	rm -f $(OBJFILES) $(TARGET) $(RENDER_OUTPUT)
 
-render:
+render: $(RENDER_OUTPUT)
 	./$(TARGET) >> $(RENDER_OUTPUT)
+
+$(RENDER_OUTPUT):
+	touch $(RENDER_OUTPUT)
