@@ -19,5 +19,7 @@ vec3 vec3_cross(vec3 vector1, vec3 vector2);
 vec3 vec3_random();
 vec3 vec3_random_in(double min, double max);
 vec3 vec3_random_in_unit_sphere();
+vec3 vec3_random_unit();
+vec3 vec3_random_in_hemisphere(vec3 normal);
 
 #endif

@@ -41,7 +41,7 @@ Color ray_color(Ray ray, int depth) {
 
   HitRecord record;
   if (world_hit(ray, 0.0001, INFINITY, &record)) {
-    vec3 target = vec3_add(record.normal, vec3_random_in_unit_sphere());
+    vec3 target = vec3_add(record.normal, vec3_random_in_hemisphere(record.normal));
     Ray child = { record.point, target };
     return vec3_mul(ray_color(child, depth - 1), 0.5);
   }

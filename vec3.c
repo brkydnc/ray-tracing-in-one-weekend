@@ -73,3 +73,12 @@ vec3 vec3_random_in_unit_sphere() {
     return p;
   }
 }
+
+vec3 vec3_random_unit() {
+  return vec3_unit(vec3_random_in_unit_sphere());
+}
+
+vec3 vec3_random_in_hemisphere(vec3 normal) {
+  vec3 in_unit_sphere = vec3_random_in_unit_sphere();
+  return (vec3_dot(in_unit_sphere, normal) > 0.0) ? in_unit_sphere : vec3_mul(in_unit_sphere, -1);
+}
