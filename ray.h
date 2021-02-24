@@ -8,6 +8,6 @@ typedef struct {
   vec3 direction;
 } Ray;
 
-vec3 point_at(Ray ray, double t);
+vec3 point_at(const Ray *ray, double t);
 
 #endif

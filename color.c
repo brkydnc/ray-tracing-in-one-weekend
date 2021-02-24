@@ -12,10 +12,10 @@ Color color_from(double r, double g, double b) {
   return color;
 }
 
-void write_color(FILE *out, Color color, int samples_per_pixel) {
-  double red = color.x;
-  double green = color.y;
-  double blue = color.z;
+void write_color(FILE *out, const Color *color, int samples_per_pixel) {
+  double red = color->x;
+  double green = color->y;
+  double blue = color->z;
 
   double scale = 1.0 / samples_per_pixel;
   // gamma correction & scale to average color

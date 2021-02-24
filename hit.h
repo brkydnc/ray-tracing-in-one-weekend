@@ -12,7 +12,7 @@ typedef struct {
   bool front_face;
 } HitRecord;
 
-void set_face_normal(HitRecord *record, Ray ray, vec3 outward_normal);
-bool ray_hits_sphere(Sphere sphere, Ray ray, double t_min, double t_max, HitRecord *record);
+void set_face_normal(HitRecord *record, const Ray *ray, vec3 *outward_normal);
+bool ray_hits_sphere(const Sphere *sphere, const Ray *ray, double t_min, double t_max, HitRecord *record);
 
 #endif

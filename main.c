@@ -19,14 +19,14 @@ const Sphere WORLD[OBJECT_COUNT] = {
   {{ 0.0, -100.5, -1.0 }, 100.0},
 };
 
-bool world_hit(Ray ray, double t_min, double t_max, HitRecord *record) {
+bool world_hit(const Ray *ray, double t_min, double t_max, HitRecord *record) {
     HitRecord temp_rec;
     bool hit_anything = false;
     double closest_so_far = t_max;
 
     int i;
     for (i=0; i<OBJECT_COUNT; i++) {
-      if (ray_hits_sphere(WORLD[i], ray, t_min, closest_so_far, &temp_rec)) {
+      if (ray_hits_sphere(&WORLD[i], ray, t_min, closest_so_far, &temp_rec)) {
         hit_anything = true;
         closest_so_far = temp_rec.t;
         *record = temp_rec;
@@ -36,17 +36,17 @@ bool world_hit(Ray ray, double t_min, double t_max, HitRecord *record) {
     return hit_anything;
 }
 
-Color ray_color(Ray ray, int depth) {
+Color ray_color(const Ray *ray, int depth) {
   if(depth <= 0) return color_from(0.0, 0.0, 0.0);
 
   HitRecord record;
   if (world_hit(ray, 0.0001, INFINITY, &record)) {
     vec3 target = vec3_add(record.normal, vec3_random_in_hemisphere(record.normal));
     Ray child = { record.point, target };
-    return vec3_mul(ray_color(child, depth - 1), 0.5);
+    return vec3_mul(ray_color(&child, depth - 1), 0.5);
   }
 
-  vec3 unit_direction = vec3_unit(ray.direction);
+  vec3 unit_direction = vec3_unit(ray->direction);
   double t = 0.5 * (unit_direction.y + 1.0);
   return vec3_add(vec3_mul(WHITE, 1.0 - t), vec3_mul(SKY_BLUE, t));
 }
@@ -75,10 +75,10 @@ int main() {
       for (s=0; s < samples_per_pixel; s++) {
         double u = (double) (width - w + random_double()) / width;
         double v = (double) (height - h + random_double()) / height;
-        Ray ray = get_ray(camera, u, v);
-        pixel = vec3_add(pixel, ray_color(ray, max_depth));
+        Ray ray = get_ray(&camera, u, v);
+        pixel = vec3_add(pixel, ray_color(&ray, max_depth));
       }
-      write_color(stdout, pixel, samples_per_pixel);
+      write_color(stdout, &pixel, samples_per_pixel);
     }
   }
 }

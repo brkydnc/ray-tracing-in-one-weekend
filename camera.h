@@ -10,7 +10,7 @@ typedef struct {
   vec3 vertical;
 } Camera;
 
-Ray get_ray(Camera camera, double u, double v);
 void initialize_camera(Camera *camera, double aspect_ratio, double viewport_height, double focal_length);
+Ray get_ray(const Camera *camera, double u, double v);
 
 #endif
