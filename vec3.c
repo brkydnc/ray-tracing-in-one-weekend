@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <math.h>
 #include "vec3.h"
 #include "util.h"
@@ -31,6 +32,10 @@ vec3 vec3_mul(vec3 vector, double n) {
   vector.z *= n;
   return vector;
 };
+
+vec3 vec3_mul_vec(vec3 v, vec3 u) {
+  return vec3_from(v.x * u.x, v.y * u.y, v.z * u.z);
+}
 
 vec3 vec3_div(vec3 vector, double n) {
   vector.x /= n;
@@ -81,4 +86,13 @@ vec3 vec3_random_unit() {
 vec3 vec3_random_in_hemisphere(vec3 normal) {
   vec3 in_unit_sphere = vec3_random_in_unit_sphere();
   return (vec3_dot(in_unit_sphere, normal) > 0.0) ? in_unit_sphere : vec3_mul(in_unit_sphere, -1);
+}
+
+bool near_zero(vec3 v) {
+  const double s = 1e-8;
+  return (fabs(v.x) < s) && (fabs(v.y) < s) && (fabs(v.z) < s);
+}
+
+vec3 vec3_reflect(vec3 v, vec3 n) {
+    return vec3_sub(v, vec3_mul(n, 2 * vec3_dot(v, n)));
 }

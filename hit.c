@@ -26,6 +26,7 @@ bool ray_hits_sphere(const Sphere *sphere, const Ray *ray, double t_min, double 
 
   record->t = root;
   record->point = point_at(ray, root);
+  record->material = &sphere->material;
   vec3 outward_normal = vec3_div(vec3_sub(record->point, sphere->position), sphere->radius);
   set_face_normal(record, ray, &outward_normal);
 

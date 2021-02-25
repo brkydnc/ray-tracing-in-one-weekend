@@ -1,6 +1,6 @@
 CC = gcc
 LDFLAGS = -lm 
-OBJFILES = main.o vec3.o color.o ray.o hit.o util.o camera.o
+OBJFILES = main.o vec3.o color.o ray.o hit.o util.o camera.o material.o sphere.o
 TARGET = main
 RENDER_OUTPUT = output.ppm
 
