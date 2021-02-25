@@ -19,8 +19,9 @@ bool lambertian_scatter(Material *material, Ray* ray, HitRecord *record, Color* 
 }
 
 bool metal_scatter(Material *material, Ray* ray, HitRecord* record, Color* attenuation, Ray* scattered) {
+  double fuzz = (material->fuzz < 1) ?  material-> fuzz : 1;
   vec3 reflected = vec3_reflect(vec3_unit(ray->direction), record->normal);
-  *scattered = ray_from(record->point, reflected);
+  *scattered = ray_from(record->point, vec3_add(reflected, vec3_mul(vec3_random_in_unit_sphere(), fuzz)));
   *attenuation = material->albedo;
   return (vec3_dot(scattered->direction, record->normal) > 0);
 }

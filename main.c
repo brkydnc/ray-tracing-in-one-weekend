@@ -17,20 +17,20 @@
 Sphere WORLD[OBJECT_COUNT];
 
 bool world_hit(const Ray *ray, double t_min, double t_max, HitRecord *record) {
-    HitRecord temp_rec;
-    bool hit_anything = false;
-    double closest_so_far = t_max;
+  HitRecord temp_rec;
+  bool hit_anything = false;
+  double closest_so_far = t_max;
 
-    int i;
-    for (i=0; i<OBJECT_COUNT; i++) {
-      if (ray_hits_sphere(&WORLD[i], ray, t_min, closest_so_far, &temp_rec)) {
-        hit_anything = true;
-        closest_so_far = temp_rec.t;
-        *record = temp_rec;
-      }
+  int i;
+  for (i=0; i<OBJECT_COUNT; i++) {
+    if (ray_hits_sphere(&WORLD[i], ray, t_min, closest_so_far, &temp_rec)) {
+      hit_anything = true;
+      closest_so_far = temp_rec.t;
+      *record = temp_rec;
     }
+  }
 
-    return hit_anything;
+  return hit_anything;
 }
 
 Color ray_color(const Ray *ray, int depth) {
@@ -64,10 +64,10 @@ int main() {
   Camera camera;
   initialize_camera(&camera, aspect_ratio, VIEWPORT_HEIGHT, FOCAL_LENGTH);
 
-  Material ground =  { lambertian_scatter, {0.8, 0.8, 0.0}};
-  Material center =  { lambertian_scatter, {0.7, 0.3, 0.3}};
-  Material left =  { metal_scatter, {0.8, 0.8, 0.8}};
-  Material right =  { metal_scatter, {0.8, 0.6, 0.2}};
+  Material ground =  { lambertian_scatter, {0.8, 0.8, 0.0}, 0};
+  Material center =  { lambertian_scatter, {0.7, 0.3, 0.3}, 0};
+  Material left =  { metal_scatter, {0.8, 0.8, 0.8}, 0.0};
+  Material right =  { metal_scatter, {0.8, 0.6, 0.2}, 0.6};
 
   WORLD[0] = sphere_from(vec3_from(0.0, -100.5, -1.0), 100.0, ground);
   WORLD[1] = sphere_from(vec3_from(0.0,    0.0, -1.0),   0.5, center);
