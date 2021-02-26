@@ -83,7 +83,7 @@ int main() {
       Color pixel = { 0.0, 0.0, 0.0 };
       register int s;
       for (s=0; s < samples_per_pixel; s++) {
-        double u = (double) (width - w + random_double()) / width;
+        double u = (double) (w + random_double()) / width;
         double v = (double) (height - h + random_double()) / height;
         Ray ray = get_ray(&camera, u, v);
         pixel = vec3_add(pixel, ray_color(&ray, max_depth));

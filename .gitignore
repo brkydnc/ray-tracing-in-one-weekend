@@ -1,4 +1,5 @@
 *.swp
 *.o
 *.ppm
+*.png
 main
