@@ -4,7 +4,7 @@
 #include "ray.h"
 #include "color.h"
 
-bool lambertian_scatter(Material *material, Ray* ray, HitRecord *record, Color* attenuation, Ray* scattered) {
+bool lambertian_scatter(Material *material, const Ray* ray, HitRecord *record, Color* attenuation, Ray* scattered) {
   vec3 scatter_direction = vec3_add(record->normal, vec3_random_unit());
   *scattered = ray_from(record->point, scatter_direction);
   *attenuation = material->albedo;
@@ -18,7 +18,7 @@ bool lambertian_scatter(Material *material, Ray* ray, HitRecord *record, Color* 
   return true;
 }
 
-bool metal_scatter(Material *material, Ray* ray, HitRecord* record, Color* attenuation, Ray* scattered) {
+bool metal_scatter(Material *material, const Ray* ray, HitRecord* record, Color* attenuation, Ray* scattered) {
   double fuzz = (material->fuzz < 1) ?  material-> fuzz : 1;
   vec3 reflected = vec3_reflect(vec3_unit(ray->direction), record->normal);
   *scattered = ray_from(record->point, vec3_add(reflected, vec3_mul(vec3_random_in_unit_sphere(), fuzz)));

@@ -15,7 +15,7 @@ typedef struct HitRecord {
 } HitRecord;
 
 void set_face_normal(HitRecord *record, const Ray *ray, vec3 *outward_normal);
-bool ray_hits_sphere(const Sphere *sphere, const Ray *ray, double t_min, double t_max, HitRecord *record);
+bool ray_hits_sphere(Sphere *sphere, const Ray *ray, double t_min, double t_max, HitRecord *record);
 
 #undef Material
 #endif

@@ -8,7 +8,7 @@ void set_face_normal(HitRecord *record, const Ray *ray, vec3 *outward_normal) {
   record->normal = record->front_face ? *outward_normal : vec3_mul(*outward_normal, -1.0);
 }
 
-bool ray_hits_sphere(const Sphere *sphere, const Ray *ray, double t_min, double t_max, HitRecord *record) {
+bool ray_hits_sphere(Sphere *sphere, const Ray *ray, double t_min, double t_max, HitRecord *record) {
   vec3 ctr = vec3_sub(ray->origin, sphere->position);
   double a = vec3_dot(ray->direction, ray->direction);
   double half_b = vec3_dot(ray->direction, ctr);
