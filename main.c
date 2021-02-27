@@ -4,6 +4,7 @@
 #include <math.h>
 #include <time.h>
 #include "util.h"
+#include "vec3.h"
 #include "hit.h"
 #include "ray.h"
 #include "color.h"
@@ -11,8 +12,6 @@
 #include "camera.h"
 
 #define OBJECT_COUNT 4
-#define VIEWPORT_HEIGHT 2.0
-#define FOCAL_LENGTH 1.0
 
 Sphere WORLD[OBJECT_COUNT];
 
@@ -62,7 +61,10 @@ int main() {
 
   // Camera
   Camera camera;
-  initialize_camera(&camera, aspect_ratio, VIEWPORT_HEIGHT, FOCAL_LENGTH);
+  vec3 lookfrom = { -2.0, 2.0, 1.0 };
+  vec3 lookat = { 0.0, 0.0 , -1.0 };
+  vec3 abs_vertical = { 0.0, 1.0, 0.0 };
+  initialize_camera(&camera, lookfrom, lookat, abs_vertical, 20.0, aspect_ratio);
 
   Material ground =  { lambertian_scatter, {0.8, 0.8, 0.0}, 0};
   Material center =  { lambertian_scatter, {0.7, 0.3, 0.3}, 0};
@@ -70,8 +72,8 @@ int main() {
   Material right =  { metal_scatter, {0.8, 0.6, 0.2}, 0.6};
 
   WORLD[0] = sphere_from(vec3_from(0.0, -100.5, -1.0), 100.0, ground);
-  WORLD[1] = sphere_from(vec3_from(0.0,    0.0, -1.0),   0.5, center);
-  WORLD[2] = sphere_from(vec3_from(-1.5,   0.0, -2.0),   0.5, left);
+  WORLD[1] = sphere_from(vec3_from(0.0,    0.0, -1.0),   0.5, left);
+  WORLD[2] = sphere_from(vec3_from(-1.0,   0.0, -1.0),   0.5, center);
   WORLD[3] = sphere_from(vec3_from(1.0,    0.0, -1.0),   0.5, right);
 
   // Write image file header

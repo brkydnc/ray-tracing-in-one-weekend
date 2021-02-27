@@ -12,8 +12,7 @@ $(TARGET): $(OBJFILES)
 clean:
 	rm -f $(OBJFILES) $(TARGET) $(RENDER_OUTPUT)
 
-render: $(RENDER_OUTPUT)
-	./$(TARGET) >> $(RENDER_OUTPUT)
-
-$(RENDER_OUTPUT):
+render:
+	rm -f $(RENDER_OUTPUT)
 	touch $(RENDER_OUTPUT)
+	./$(TARGET) >> $(RENDER_OUTPUT)
